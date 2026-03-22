@@ -1,0 +1,9 @@
+name = "superk-cms-api"
+main = "worker/index.js"
+compatibility_date = "2024-01-01"
+
+# Workers Free plan - 100k requests/day, 10ms CPU time
+# Workers Paid plan - unlimited requests, 30s CPU time
+
+[vars]
+GITHUB_RAW = "https://raw.githubusercontent.com/KevPH2026/superk-cms/main"

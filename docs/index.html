@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Superk — Deep Think</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --bg: #0a0a0a;
+      --text: #e5e5e5;
+      --muted: #666;
+      --accent: #fff;
+      --border: #1a1a1a;
+      --card: #111;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 80px 0 60px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 60px;
+    }
+    header .logo {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+    header h1 {
+      font-size: clamp(40px, 8vw, 72px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    header p {
+      font-size: 18px;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    /* Article list */
+    .articles {
+      list-style: none;
+    }
+    .article-item {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-item:last-child {
+      border-bottom: none;
+    }
+    .article-meta {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .article-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      line-height: 1.3;
+      display: block;
+      margin-bottom: 8px;
+      transition: color 0.15s;
+    }
+    .article-title:hover {
+      color: #888;
+    }
+    .article-title-zh {
+      font-size: 16px;
+      color: var(--muted);
+      font-weight: 400;
+      display: block;
+      margin-bottom: 12px;
+    }
+    .article-excerpt {
+      font-size: 15px;
+      color: #888;
+      line-height: 1.6;
+    }
+
+    /* Expanded article */
+    .article-detail {
+      padding: 40px 0 80px;
+      display: none;
+    }
+    .article-detail.active {
+      display: block;
+    }
+    .back-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 40px;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--text); }
+    .article-detail h1 {
+      font-size: clamp(28px, 6vw, 48px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .article-detail .title-zh {
+      font-size: 20px;
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+    .article-detail .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .article-detail .meta span {
+      margin-right: 16px;
+    }
+    .article-detail .content {
+      font-size: 17px;
+      line-height: 1.8;
+      color: #ccc;
+    }
+    .article-detail .content h1,
+    .article-detail .content h2,
+    .article-detail .content h3 {
+      color: var(--accent);
+      margin: 2em 0 0.8em;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .article-detail .content h1 { font-size: 32px; }
+    .article-detail .content h2 { font-size: 24px; }
+    .article-detail .content h3 { font-size: 18px; }
+    .article-detail .content p { margin-bottom: 1.4em; }
+    .article-detail .content ul, .article-detail .content ol {
+      margin: 1em 0 1.4em 1.5em;
+    }
+    .article-detail .content li { margin-bottom: 0.5em; }
+    .article-detail .content strong { color: var(--accent); font-weight: 600; }
+    .article-detail .content em { font-style: italic; }
+    .article-detail .content code {
+      background: #1a1a1a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    .article-detail .content blockquote {
+      border-left: 3px solid #333;
+      padding-left: 20px;
+      margin: 1.5em 0;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .article-detail .content hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2em 0;
+    }
+    .article-detail .lang-divider {
+      border-top: 1px dashed var(--border);
+      margin: 60px 0;
+      padding-top: 40px;
+    }
+    .lang-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* Footer */
+    footer {
+      padding: 60px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 80px;
+    }
+    footer p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Lang toggle */
+    .lang-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 40px;
+    }
+    .lang-btn {
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .lang-btn.active {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .lang-btn:hover { border-color: #444; color: #888; }
+
+    [data-lang="zh"] .en { display: none; }
+    [data-lang="en"] .zh { display: none; }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container" id="listView">
+  <header>
+    <div class="logo">Superk</div>
+    <h1>Deep Think</h1>
+    <p>关于AI、商业、人性与人生的深度思考。<br>Deep thoughts on AI, business, humanity, and life.</p>
+  </header>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">English</button>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+  </div>
+
+  <p class="section-label">Writing</p>
+  <ul class="articles" id="articlesList"></ul>
+
+  <footer>
+    <p>© 2026 Superk — Think deep, act fast</p>
+  </footer>
+</div>
+
+<div class="container" id="detailView" style="display:none">
+  <div class="article-detail active">
+    <a href="#" class="back-link" onclick="showList();return false">← Back</a>
+    <h1 id="detailTitle"></h1>
+    <p class="title-zh" id="detailTitleZh"></p>
+    <div class="meta">
+      <span id="detailCategory"></span>
+      <span id="detailDate"></span>
+    </div>
+    <div class="content en" id="detailContentEn"></div>
+    <div class="content zh lang-divider" id="detailContentZh"></div>
+  </div>
+</div>
+
+<script>
+let articles = [];
+let currentLang = 'en';
+
+async function loadArticles() {
+  try {
+    const res = await fetch('articles.json');
+    articles = await res.json();
+  } catch (e) {
+    // articles.json not available, use embedded data
+    articles = window.__articles || [];
+  }
+  renderList();
+}
+
+function renderList() {
+  const list = document.getElementById('articlesList');
+  if (!articles.length) {
+    list.innerHTML = '<li class="article-item"><p class="article-excerpt">No articles yet.</p></li>';
+    return;
+  }
+  list.innerHTML = articles.map(p => {
+    const title = currentLang === 'zh' && p.title_zh ? p.title_zh : p.title;
+    const excerpt = currentLang === 'zh' && p.content_zh
+      ? p.content_zh.replace(/<[^>]+>/g, '').substring(0, 160) + '...'
+      : p.excerpt;
+    const cat = p.category ? `<span>${p.category.replace('-', ' ')}</span>` : '';
+    return `<li class="article-item">
+      <div class="article-meta en">${cat} ${p.tags || ''}</div>
+      <div class="article-meta zh" style="display:none">${cat} ${p.tags || ''}</div>
+      <a class="article-title" href="#" onclick="showDetail(${p.id});return false">${title}</a>
+      <span class="article-title-zh">${p.title_zh || ''}</span>
+      <p class="article-excerpt en">${p.excerpt || ''}</p>
+      <p class="article-excerpt zh" style="display:none">${p.content_zh ? p.content_zh.replace(/<[^>]+>/g, '').substring(0, 160) + '...' : ''}</p>
+    </li>`;
+  }).join('');
+}
+
+function showDetail(id) {
+  const p = articles.find(a => a.id === id);
+  if (!p) return;
+  document.getElementById('listView').style.display = 'none';
+  document.getElementById('detailView').style.display = 'block';
+  document.getElementById('detailTitle').textContent = p.title;
+  document.getElementById('detailTitleZh').textContent = p.title_zh || '';
+  document.getElementById('detailCategory').textContent = p.category || '';
+  document.getElementById('detailDate').textContent = p.published_at ? new Date(p.published_at).toLocaleDateString() : '';
+  document.getElementById('detailContentEn').innerHTML = formatContent(p.content || '');
+  document.getElementById('detailContentZh').innerHTML = formatContent(p.content_zh || '');
+  window.scrollTo(0, 0);
+}
+
+function showList() {
+  document.getElementById('detailView').style.display = 'none';
+  document.getElementById('listView').style.display = 'block';
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase() === lang));
+  document.body.setAttribute('data-lang', lang);
+  document.querySelectorAll('.en, .zh').forEach(el => {
+    if (el.classList.contains(lang)) el.style.display = '';
+    else el.style.display = 'none';
+  });
+}
+
+function formatContent(text) {
+  if (!text) return '<p>No content yet.</p>';
+  // Very basic markdown-ish to HTML
+  return text
+    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+    .replace(/^\*\*([^*]+)\*\*/gm, '<strong>$1</strong>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/^- (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>')
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(.+)$/gm, function(m) {
+      if (m.startsWith('<')) return m;
+      return '<p>' + m + '</p>';
+    });
+}
+
+loadArticles();
+</script>
+</body>
+</html>
